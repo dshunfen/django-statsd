@@ -1,12 +1,12 @@
 from __future__ import with_statement
 from unittest import TestCase
 import mock
-from django_statsd import middleware
+from django_cloudwatch import middleware
 
 
 class TestPrefix(TestCase):
 
-    @mock.patch('statsd.Client')
+    @mock.patch('cloudwatch.Client')
     def test_prefix(self, mock_client):
         from django import test
 

@@ -1,5 +1,5 @@
 from __future__ import absolute_import
-import django_statsd
+import django_cloudwatch
 
 try:
     import redis
@@ -7,7 +7,7 @@ try:
     class StatsdRedis(redis.Redis):
 
         def execute_command(self, func_name, *args, **kwargs):
-            with django_statsd.with_('redis.%s' % func_name.lower()):
+            with django_cloudwatch.with_('redis.%s' % func_name.lower()):
                 return origRedis.execute_command(self, func_name, *args,
                                                  **kwargs)
 

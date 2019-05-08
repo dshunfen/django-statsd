@@ -86,7 +86,7 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE = (
-    'django_statsd.middleware.StatsdMiddleware',
+    'django_cloudwatch.middleware.StatsdMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -94,7 +94,7 @@ MIDDLEWARE = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_statsd.middleware.StatsdMiddlewareTimer',
+    'django_cloudwatch.middleware.StatsdMiddlewareTimer',
 )
 
 ROOT_URLCONF = 'tests.urls'
@@ -119,7 +119,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'django_statsd',
+    'django_cloudwatch',
     'tests.test_app',
 )
 
@@ -152,7 +152,7 @@ LOGGING = {
     }
 }
 
-STATSD_HOST = '127.0.0.1'
-STATSD_PORT = '8125'
-STATSD_TRACK_MIDDLEWARE = True
-STATSD_PREFIX = 'some_key_prefix'
+CLOUDWATCH_HOST = '127.0.0.1'
+CLOUDWATCH_PORT = '8125'
+CLOUDWATCH_TRACK_MIDDLEWARE = True
+CLOUDWATCH_PREFIX = 'some_key_prefix'

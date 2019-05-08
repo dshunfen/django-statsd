@@ -8,7 +8,7 @@ Contents:
 
    usage
 
-   django_statsd
+   django_cloudwatch
 
 Indices and tables
 ==================

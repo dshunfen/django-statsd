@@ -1,4 +1,4 @@
-from django_statsd.middleware import (
+from django_cloudwatch.middleware import (
     decr,
     incr,
     start,
@@ -8,7 +8,7 @@ from django_statsd.middleware import (
     named_wrapper,
     decorator,
 )
-from django_statsd import redis, celery, json, templates
+from django_cloudwatch import redis, celery, json, templates
 
 __all__ = [
     'decr',

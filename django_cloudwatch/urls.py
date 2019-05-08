@@ -1,10 +1,10 @@
 from __future__ import absolute_import
-import django_statsd
+import django_cloudwatch
 
 try:
     import httplib
 
-    class StatsdHTTPConnection(httplib.HTTPConnection):
+    class CloudwatchHTTPConnection(httplib.HTTPConnection):
 
         def __init__(self, *args, **kwargs):
             origHTTPConnection.__init__(self, *args, **kwargs)
@@ -18,23 +18,23 @@ try:
             return hostname
 
         def connect(self, *args, **kwargs):
-            django_statsd.start('url.%s' % self._get_host_name())
+            django_cloudwatch.start('url.%s' % self._get_host_name())
             return origHTTPConnection.connect(self, *args, **kwargs)
 
         def close(self, *args, **kwargs):
             if self.sock is not None:
-                django_statsd.stop('url.%s' % self._get_host_name())
+                django_cloudwatch.stop('url.%s' % self._get_host_name())
             return origHTTPConnection.close(self, *args, **kwargs)
 
         def __del__(self, *args, **kwargs):
             if self.sock is not None:
-                django_statsd.stop('url.%s' % self._get_host_name())
+                django_cloudwatch.stop('url.%s' % self._get_host_name())
             return origHTTPConnection.__del__(self, *args, **kwargs)
 
     origHTTPConnection = None
     # NOTE issubclass is true if both are the same class
-    if not issubclass(httplib.HTTPConnection, StatsdHTTPConnection):
+    if not issubclass(httplib.HTTPConnection, CloudwatchHTTPConnection):
         origHTTPConnection = httplib.HTTPConnection
-        httplib.HTTPConnection = StatsdHTTPConnection
+        httplib.HTTPConnection = CloudwatchHTTPConnection
 except ImportError:
     pass

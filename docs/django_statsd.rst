@@ -1,10 +1,10 @@
-django_statsd Package
+django_cloudwatch Package
 =====================
 
-:mod:`django_statsd` Package
+:mod:`django_cloudwatch` Package
 ----------------------------
 
-.. automodule:: django_statsd.__init__
+.. automodule:: django_cloudwatch.__init__
     :members:
     :undoc-members:
     :show-inheritance:
@@ -12,7 +12,7 @@ django_statsd Package
 :mod:`settings` Module
 ----------------------
 
-.. automodule:: django_statsd.settings
+.. automodule:: django_cloudwatch.settings
     :members:
     :undoc-members:
     :show-inheritance:
@@ -20,7 +20,7 @@ django_statsd Package
 :mod:`celery` Module
 --------------------
 
-.. automodule:: django_statsd.celery
+.. automodule:: django_cloudwatch.celery
     :members:
     :undoc-members:
     :show-inheritance:
@@ -28,7 +28,7 @@ django_statsd Package
 :mod:`database` Module
 ----------------------
 
-.. automodule:: django_statsd.database
+.. automodule:: django_cloudwatch.database
     :members:
     :undoc-members:
     :show-inheritance:
@@ -36,7 +36,7 @@ django_statsd Package
 :mod:`json` Module
 ------------------
 
-.. automodule:: django_statsd.json
+.. automodule:: django_cloudwatch.json
     :members:
     :undoc-members:
     :show-inheritance:
@@ -44,7 +44,7 @@ django_statsd Package
 :mod:`middleware` Module
 ------------------------
 
-.. automodule:: django_statsd.middleware
+.. automodule:: django_cloudwatch.middleware
     :members:
     :undoc-members:
     :show-inheritance:
@@ -52,7 +52,7 @@ django_statsd Package
 :mod:`redis` Module
 -------------------
 
-.. automodule:: django_statsd.redis
+.. automodule:: django_cloudwatch.redis
     :members:
     :undoc-members:
     :show-inheritance:
@@ -60,7 +60,7 @@ django_statsd Package
 :mod:`templates` Module
 -----------------------
 
-.. automodule:: django_statsd.templates
+.. automodule:: django_cloudwatch.templates
     :members:
     :undoc-members:
     :show-inheritance:
@@ -68,7 +68,7 @@ django_statsd Package
 :mod:`urls` Module
 ------------------
 
-.. automodule:: django_statsd.urls
+.. automodule:: django_cloudwatch.urls
     :members:
     :undoc-members:
     :show-inheritance:
@@ -76,7 +76,7 @@ django_statsd Package
 :mod:`utils` Module
 -------------------
 
-.. automodule:: django_statsd.utils
+.. automodule:: django_cloudwatch.utils
     :members:
     :undoc-members:
     :show-inheritance:

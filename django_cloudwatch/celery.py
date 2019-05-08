@@ -1,5 +1,5 @@
 from __future__ import absolute_import
-from django_statsd import middleware, utils
+from django_cloudwatch import middleware, utils
 
 try:
     from celery import signals

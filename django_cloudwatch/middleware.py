@@ -5,7 +5,7 @@ import functools
 import threading
 import warnings
 import collections
-import statsd
+import cloudwatch
 
 from django.utils import deprecation
 from django.core import exceptions
@@ -18,14 +18,14 @@ logger = logging.getLogger(__name__)
 
 TAGS_LIKE_SUPPORTED = ['=', '_is_']
 try:
-    MAKE_TAGS_LIKE = settings.STATSD_TAGS_LIKE
+    MAKE_TAGS_LIKE = settings.CLOUDWATCH_TAGS_LIKE
     if MAKE_TAGS_LIKE is not None:
         if MAKE_TAGS_LIKE is True:
             MAKE_TAGS_LIKE = '_is_'
         elif MAKE_TAGS_LIKE not in TAGS_LIKE_SUPPORTED:
             MAKE_TAGS_LIKE = False
             warnings.warn(
-                'Unsupported `STATSD_TAGS_LIKE` setting. '
+                'Unsupported `CLOUDWATCH_TAGS_LIKE` setting. '
                 'Please, choose from %r' % TAGS_LIKE_SUPPORTED
             )
 
@@ -52,11 +52,11 @@ class WithTimer(object):
 
 
 class Client(object):
-    class_ = statsd.Client
+    class_ = cloudwatch.Client
 
     def __init__(self, prefix='view'):
-        if settings.STATSD_PREFIX:
-            prefix = '%s.%s' % (settings.STATSD_PREFIX, prefix)
+        if settings.CLOUDWATCH_PREFIX:
+            prefix = '%s.%s' % (settings.CLOUDWATCH_PREFIX, prefix)
         self.prefix = prefix
         self.data = collections.defaultdict(int)
 
@@ -71,7 +71,7 @@ class Client(object):
 
 
 class Counter(Client):
-    class_ = statsd.Counter
+    class_ = cloudwatch.Counter
 
     def increment(self, key, delta=1):
         self.data[key] += delta
@@ -87,7 +87,7 @@ class Counter(Client):
 
 
 class Timer(Client):
-    class_ = statsd.Timer
+    class_ = cloudwatch.Timer
 
     def __init__(self, prefix='view'):
         Client.__init__(self, prefix)
@@ -114,7 +114,7 @@ class Timer(Client):
         for k in list(self.data.keys()):
             client.send(k, self.data.pop(k))
 
-        if settings.STATSD_DEBUG:
+        if settings.CLOUDWATCH_DEBUG:
             assert not self.starts, ('Timer(s) %r were started but never '
                                      'stopped' % self.starts)
 
@@ -152,13 +152,13 @@ class StatsdMiddleware(deprecation.MiddlewareMixin):
 
     def process_request(self, request):
         # store the timings in the request so it can be used everywhere
-        request.statsd = self.start()
-        if settings.STATSD_TRACK_MIDDLEWARE:
+        request.cloudwatch = self.start()
+        if settings.CLOUDWATCH_TRACK_MIDDLEWARE:
             self.scope.timings.start('process_request')
         self.view_name = None
 
     def process_view(self, request, view_func, view_args, view_kwargs):
-        if settings.STATSD_TRACK_MIDDLEWARE:
+        if settings.CLOUDWATCH_TRACK_MIDDLEWARE:
             StatsdMiddleware.scope.timings.start('process_view')
 
         # View name is defined as module.view
@@ -181,7 +181,7 @@ class StatsdMiddleware(deprecation.MiddlewareMixin):
             str(response.status_code // 100) + 'xx')
         self.scope.counter_codes.submit('http_codes')
 
-        if settings.STATSD_TRACK_MIDDLEWARE:
+        if settings.CLOUDWATCH_TRACK_MIDDLEWARE:
             StatsdMiddleware.scope.timings.stop('process_response')
         if MAKE_TAGS_LIKE:
             method = 'method' + MAKE_TAGS_LIKE
@@ -202,13 +202,13 @@ class StatsdMiddleware(deprecation.MiddlewareMixin):
         return response
 
     def process_exception(self, request, exception):
-        if settings.STATSD_TRACK_MIDDLEWARE:
+        if settings.CLOUDWATCH_TRACK_MIDDLEWARE:
             StatsdMiddleware.scope.timings.stop('process_exception')
         self.scope.counter_codes.increment('5xx')
         self.scope.counter_codes.submit('http_codes')
 
     def process_template_response(self, request, response):
-        if settings.STATSD_TRACK_MIDDLEWARE:
+        if settings.CLOUDWATCH_TRACK_MIDDLEWARE:
             StatsdMiddleware.scope.timings.stop('process_template_response')
         return response
 
@@ -216,30 +216,30 @@ class StatsdMiddleware(deprecation.MiddlewareMixin):
         self.scope.timings = None
         self.scope.counter = None
         self.view_name = None
-        request.statsd = None
+        request.cloudwatch = None
 
 
 class StatsdMiddlewareTimer(deprecation.MiddlewareMixin):
 
     def process_request(self, request):
-        if settings.STATSD_TRACK_MIDDLEWARE:
+        if settings.CLOUDWATCH_TRACK_MIDDLEWARE:
             StatsdMiddleware.scope.timings.stop('process_request')
 
     def process_view(self, request, view_func, view_args, view_kwargs):
-        if settings.STATSD_TRACK_MIDDLEWARE:
+        if settings.CLOUDWATCH_TRACK_MIDDLEWARE:
             StatsdMiddleware.scope.timings.stop('process_view')
 
     def process_response(self, request, response):
-        if settings.STATSD_TRACK_MIDDLEWARE:
+        if settings.CLOUDWATCH_TRACK_MIDDLEWARE:
             StatsdMiddleware.scope.timings.start('process_response')
         return response
 
     def process_exception(self, request, exception):
-        if settings.STATSD_TRACK_MIDDLEWARE:
+        if settings.CLOUDWATCH_TRACK_MIDDLEWARE:
             StatsdMiddleware.scope.timings.start('process_exception')
 
     def process_template_response(self, request, response):
-        if settings.STATSD_TRACK_MIDDLEWARE:
+        if settings.CLOUDWATCH_TRACK_MIDDLEWARE:
             StatsdMiddleware.scope.timings.start('process_template_response')
         return response
 

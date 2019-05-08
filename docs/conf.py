@@ -19,7 +19,7 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'tests.settings'
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 # sys.path.insert(0, os.path.join(os.path.abspath(os.path.pardir), 'tests'))
 sys.path.insert(0, os.path.abspath(os.path.pardir))
-from django_statsd import __about__
+from django_cloudwatch import __about__
 
 import django
 django.setup()

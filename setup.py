@@ -6,7 +6,7 @@ from setuptools.command.test import test as TestCommand
 # To prevent importing about and thereby breaking the coverage info we use this
 # exec hack
 about = {}
-with open('django_statsd/__about__.py') as fp:
+with open('django_cloudwatch/__about__.py') as fp:
     exec(fp.read(), about)
 
 
@@ -41,7 +41,7 @@ if __name__ == '__main__':
         license='BSD',
         packages=setuptools.find_packages(exclude=['tests']),
         install_requires=[
-            'python-statsd>=1.7.2',
+            'python-cloudwatch>=1.7.2',
         ],
         extras_require={
             'docs': [
