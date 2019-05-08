@@ -86,7 +86,7 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE = (
-    'django_cloudwatch.middleware.StatsdMiddleware',
+    'django_cloudwatch.middleware.CloudwatchMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -94,7 +94,7 @@ MIDDLEWARE = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_cloudwatch.middleware.StatsdMiddlewareTimer',
+    'django_cloudwatch.middleware.CloudwatchMiddlewareTimer',
 )
 
 ROOT_URLCONF = 'tests.urls'

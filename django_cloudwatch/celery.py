@@ -20,14 +20,14 @@ try:
             instance.connect(increment(signal))
 
     def start(**kwargs):
-        middleware.StatsdMiddleware.start('celery')
+        middleware.CloudwatchMiddleware.start('celery')
 
     def stop(**kwargs):
-        middleware.StatsdMiddleware.stop(kwargs.get('task').name)
-        middleware.StatsdMiddleware.scope.timings = None
+        middleware.CloudwatchMiddleware.stop(kwargs.get('task').name)
+        middleware.CloudwatchMiddleware.scope.timings = None
 
     def clear(**kwargs):
-        middleware.StatsdMiddleware.scope.timings = None
+        middleware.CloudwatchMiddleware.scope.timings = None
 
     signals.task_prerun.connect(start)
     signals.task_postrun.connect(stop)

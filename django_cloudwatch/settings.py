@@ -26,13 +26,13 @@ CLOUDWATCH_DEBUG = get_setting('CLOUDWATCH_DEBUG', get_setting('DEBUG'))
 #: separators are _is_ and =
 CLOUDWATCH_TAGS_LIKE = get_setting('CLOUDWATCH_TAGS_LIKE')
 
-#: Statsd host, defaults to 127.0.0.1
+#: Cloudwatch host, defaults to 127.0.0.1
 CLOUDWATCH_HOST = get_setting('CLOUDWATCH_HOST', '127.0.0.1')
 
-#: Statsd port, defaults to 8125
+#: Cloudwatch port, defaults to 8125
 CLOUDWATCH_PORT = get_setting('CLOUDWATCH_PORT', 8125)
 
-#: Statsd sample rate, lowering this decreases the (random) odds of actually
+#: Cloudwatch sample rate, lowering this decreases the (random) odds of actually
 #: submitting the data. Between 0 and 1 where 1 means always
 CLOUDWATCH_SAMPLE_RATE = get_setting('CLOUDWATCH_SAMPLE_RATE', 1.0)
 

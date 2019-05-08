@@ -12,11 +12,11 @@ and view durations to AWS cloudwatch.
     - https://github.com/dshunfenthal/django-cloudwatch/issues
 * Package homepage
     - https://pypi.python.org/pypi/django-cloudwatch
-* Python Statsd
+* Python Cloudwatch
     - https://github.com/WoLpH/python-cloudwatch
 * Graphite
     - http://graphite.wikidot.com
-* Statsd
+* Cloudwatch
     - code: https://github.com/etsy/cloudwatch
     - blog post: http://codeascraft.etsy.com/2011/02/15/measure-anything-measure-everything/
 
@@ -34,9 +34,9 @@ Usage
 To install, add the following to your ``settings.py``:
 
 1. ``django_cloudwatch`` to the ``INSTALLED_APPS`` setting.
-2. ``django_cloudwatch.middleware.StatsdMiddleware`` to the **top** of your
+2. ``django_cloudwatch.middleware.CloudwatchMiddleware`` to the **top** of your
     ``MIDDLEWARE_CLASSES``
-3. ``django_cloudwatch.middleware.StatsdMiddlewareTimer`` to the **bottom** of your
+3. ``django_cloudwatch.middleware.CloudwatchMiddlewareTimer`` to the **bottom** of your
     ``MIDDLEWARE_CLASSES``
 
 Advanced Usage

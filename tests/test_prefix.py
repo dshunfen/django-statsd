@@ -16,8 +16,8 @@ class TestPrefix(TestCase):
                 []
             ))
 
-        middleware.StatsdMiddleware.start()
-        middleware.StatsdMiddleware.stop()
+        middleware.CloudwatchMiddleware.start()
+        middleware.CloudwatchMiddleware.stop()
 
         assert get_keys() >= set((
             'some_key_prefix.view.hit',

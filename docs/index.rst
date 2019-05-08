@@ -1,4 +1,4 @@
-Django Statsd Client
+Django Cloudwatch Client
 =========================================
 
 Contents:

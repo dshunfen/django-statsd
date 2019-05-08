@@ -122,7 +122,7 @@ class Timer(Client):
         return WithTimer(self, key)
 
 
-class StatsdMiddleware(deprecation.MiddlewareMixin):
+class CloudwatchMiddleware(deprecation.MiddlewareMixin):
     scope = threading.local()
 
     def __init__(self, get_response=None):
@@ -159,7 +159,7 @@ class StatsdMiddleware(deprecation.MiddlewareMixin):
 
     def process_view(self, request, view_func, view_args, view_kwargs):
         if settings.CLOUDWATCH_TRACK_MIDDLEWARE:
-            StatsdMiddleware.scope.timings.start('process_view')
+            CloudwatchMiddleware.scope.timings.start('process_view')
 
         # View name is defined as module.view
         # (e.g. django.contrib.auth.views.login)
@@ -182,7 +182,7 @@ class StatsdMiddleware(deprecation.MiddlewareMixin):
         self.scope.counter_codes.submit('http_codes')
 
         if settings.CLOUDWATCH_TRACK_MIDDLEWARE:
-            StatsdMiddleware.scope.timings.stop('process_response')
+            CloudwatchMiddleware.scope.timings.stop('process_response')
         if MAKE_TAGS_LIKE:
             method = 'method' + MAKE_TAGS_LIKE
             method += request.method.lower().replace('.', '_')
@@ -203,13 +203,13 @@ class StatsdMiddleware(deprecation.MiddlewareMixin):
 
     def process_exception(self, request, exception):
         if settings.CLOUDWATCH_TRACK_MIDDLEWARE:
-            StatsdMiddleware.scope.timings.stop('process_exception')
+            CloudwatchMiddleware.scope.timings.stop('process_exception')
         self.scope.counter_codes.increment('5xx')
         self.scope.counter_codes.submit('http_codes')
 
     def process_template_response(self, request, response):
         if settings.CLOUDWATCH_TRACK_MIDDLEWARE:
-            StatsdMiddleware.scope.timings.stop('process_template_response')
+            CloudwatchMiddleware.scope.timings.stop('process_template_response')
         return response
 
     def cleanup(self, request):
@@ -219,28 +219,28 @@ class StatsdMiddleware(deprecation.MiddlewareMixin):
         request.cloudwatch = None
 
 
-class StatsdMiddlewareTimer(deprecation.MiddlewareMixin):
+class CloudwatchMiddlewareTimer(deprecation.MiddlewareMixin):
 
     def process_request(self, request):
         if settings.CLOUDWATCH_TRACK_MIDDLEWARE:
-            StatsdMiddleware.scope.timings.stop('process_request')
+            CloudwatchMiddleware.scope.timings.stop('process_request')
 
     def process_view(self, request, view_func, view_args, view_kwargs):
         if settings.CLOUDWATCH_TRACK_MIDDLEWARE:
-            StatsdMiddleware.scope.timings.stop('process_view')
+            CloudwatchMiddleware.scope.timings.stop('process_view')
 
     def process_response(self, request, response):
         if settings.CLOUDWATCH_TRACK_MIDDLEWARE:
-            StatsdMiddleware.scope.timings.start('process_response')
+            CloudwatchMiddleware.scope.timings.start('process_response')
         return response
 
     def process_exception(self, request, exception):
         if settings.CLOUDWATCH_TRACK_MIDDLEWARE:
-            StatsdMiddleware.scope.timings.start('process_exception')
+            CloudwatchMiddleware.scope.timings.start('process_exception')
 
     def process_template_response(self, request, response):
         if settings.CLOUDWATCH_TRACK_MIDDLEWARE:
-            StatsdMiddleware.scope.timings.start('process_template_response')
+            CloudwatchMiddleware.scope.timings.start('process_template_response')
         return response
 
 
@@ -254,30 +254,30 @@ class DummyWith(object):
 
 
 def start(key):
-    if getattr(StatsdMiddleware.scope, 'timings', None):
-        StatsdMiddleware.scope.timings.start(key)
+    if getattr(CloudwatchMiddleware.scope, 'timings', None):
+        CloudwatchMiddleware.scope.timings.start(key)
 
 
 def stop(key):
-    if getattr(StatsdMiddleware.scope, 'timings', None):
-        return StatsdMiddleware.scope.timings.stop(key)
+    if getattr(CloudwatchMiddleware.scope, 'timings', None):
+        return CloudwatchMiddleware.scope.timings.stop(key)
 
 
 def with_(key):
-    if getattr(StatsdMiddleware.scope, 'timings', None):
-        return StatsdMiddleware.scope.timings(key)
+    if getattr(CloudwatchMiddleware.scope, 'timings', None):
+        return CloudwatchMiddleware.scope.timings(key)
     else:
         return DummyWith()
 
 
 def incr(key, value=1):
-    if getattr(StatsdMiddleware.scope, 'counter', None):
-        StatsdMiddleware.scope.counter.increment(key, value)
+    if getattr(CloudwatchMiddleware.scope, 'counter', None):
+        CloudwatchMiddleware.scope.counter.increment(key, value)
 
 
 def decr(key, value=1):
-    if getattr(StatsdMiddleware.scope, 'counter', None):
-        StatsdMiddleware.scope.counter.decrement(key, value)
+    if getattr(CloudwatchMiddleware.scope, 'counter', None):
+        CloudwatchMiddleware.scope.counter.decrement(key, value)
 
 
 def wrapper(prefix, f):
